@@ -7,13 +7,7 @@ RUN apt-get update && \
     mkdir /run/sshd && \
     apt-get clean
 
-# 安装 new-api
 RUN curl -L -o /opt/new-api https://github.com/QuantumNous/new-api/releases/download/v1.0.0-rc.25/new-api-v1.0.0-rc.25 && \
     chmod +x /opt/new-api
 
-# 启动脚本
-RUN echo '#!/bin/bash\n/opt/new-api --port 3000 &\n/usr/sbin/sshd -D' > /opt/start.sh && \
-    chmod +x /opt/start.sh
-
-EXPOSE 22 3000
-CMD ["/opt/start.sh"]
+CMD /opt/new-api --port ${PORT:-3000} & /usr/sbin/sshd -D
